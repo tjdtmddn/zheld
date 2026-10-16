@@ -57,13 +57,68 @@ class DarcyWeisbachApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title("Darcy-Weisbach 관로 분석기")
-        self.geometry("720x720")
-        self.minsize(620, 620)
         self.result: AnalysisResult | None = None
         self.batch_results: list[tuple[str, AnalysisResult]] = []
         self._criteria: dict[str, float | None] = {}
         self.transition_policy = tk.StringVar(value="warn")
+        self._build_menu()
+        self.bind("<Control-Return>", lambda _event: self._calculate())
+        self.bind("<F5>", lambda _event: self._refresh_results())
+        self.bind("<Control-r>", lambda _event: self._reset())
+        self.bind("<Control-Shift-O>", lambda _event: self._load_csv())
+        self.bind("<Control-s>", lambda _event: self._save_project())
         self._build_widgets()
+        self.after_idle(self.flow_entry.focus_set)
+
+    def _build_menu(self) -> None:
+        menu = tk.Menu(self)
+
+        file_menu = tk.Menu(menu, tearoff=False)
+        file_menu.add_command(
+            label="프로젝트 열기", command=self._load_project, accelerator="Ctrl+O"
+        )
+        file_menu.add_command(
+            label="프로젝트 저장", command=self._save_project, accelerator="Ctrl+S"
+        )
+        file_menu.add_separator()
+        file_menu.add_command(
+            label="CSV 불러오기", command=self._load_csv, accelerator="Ctrl+Shift+O"
+        )
+        file_menu.add_command(label="CSV 일괄 계산", command=self._calculate_csv)
+        file_menu.add_separator()
+        file_menu.add_command(label="종료", command=self.destroy)
+        menu.add_cascade(label="파일", menu=file_menu)
+
+        analysis_menu = tk.Menu(menu, tearoff=False)
+        analysis_menu.add_command(
+            label="계산하기", command=self._calculate, accelerator="Ctrl+Enter"
+        )
+        analysis_menu.add_command(
+            label="결과 갱신", command=self._refresh_results, accelerator="F5"
+        )
+        analysis_menu.add_command(
+            label="초기화", command=self._reset, accelerator="Ctrl+R"
+        )
+        analysis_menu.add_separator()
+        analysis_menu.add_command(label="결과 비교", command=self._show_result_comparison)
+        menu.add_cascade(label="분석", menu=analysis_menu)
+
+        help_menu = tk.Menu(menu, tearoff=False)
+        help_menu.add_command(
+            label="단축키 안내",
+            command=lambda: messagebox.showinfo(
+                "단축키 안내",
+                "Ctrl+Enter  계산하기\n"
+                "F5         결과 갱신\n"
+                "Ctrl+R     입력 초기화\n"
+                "Ctrl+O     프로젝트 열기\n"
+                "Ctrl+Shift+O CSV 불러오기\n"
+                "Ctrl+S     프로젝트 저장",
+                parent=self,
+            ),
+        )
+        menu.add_cascade(label="도움말", menu=help_menu)
+        self.configure(menu=menu)
 
     def _build_widgets(self) -> None:
         style = ttk.Style(self)
