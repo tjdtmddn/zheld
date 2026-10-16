@@ -1,0 +1,15 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}"
+  ],
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.include": [
+    "${workspaceFolder}/**/*.py"
+  ],
+  "python.analysis.exclude": [
+    "${workspaceFolder}/.venv",
+    "${workspaceFolder}/output"
+  ]
+}

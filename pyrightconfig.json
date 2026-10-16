@@ -1,0 +1,14 @@
+{
+  "include": [
+    "*.py"
+  ],
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "extraPaths": [
+        "."
+      ]
+    }
+  ],
+  "typeCheckingMode": "off"
+}

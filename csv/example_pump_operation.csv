@@ -1,0 +1,4 @@
+timestamp,flow_rate_m3_s,velocity_m_s,diameter_m,pipe_length_m,material,absolute_roughness_m,temperature_c,minor_loss_coefficient,minor_loss_components,static_head_m,pump_efficiency,transitional_policy
+2026-04-01,0.008,,0.075,25,pvc,,5,0.4,"입구:1:0.5",4,0.65,warn
+2026-04-02,0.012,,0.1,45,pvc,,15,0.7,"엘보:6:0.3,밸브:1:0.2",8,0.7,warn
+2026-04-03,0.018,,0.125,80,commercial-steel,,25,1.5,"입구:1:0.5,엘보:8:0.3",12,0.78,warn
