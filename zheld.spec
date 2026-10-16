@@ -10,6 +10,7 @@ a = Analysis(
     datas=[
         (str(project / "csv"), "csv"),
         (str(project / "README.md"), "."),
+        (str(project / "MANUAL.md"), "."),
     ],
     hiddenimports=["matplotlib.backends.backend_tkagg", "matplotlib.backends.backend_pdf"],
     hookspath=[],

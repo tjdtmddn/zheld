@@ -5,6 +5,8 @@ from __future__ import annotations
 import csv
 import json
 import math
+import sys
+import webbrowser
 from datetime import datetime
 import tkinter as tk
 from pathlib import Path
@@ -104,6 +106,8 @@ class DarcyWeisbachApp(tk.Tk):
         menu.add_cascade(label="분석", menu=analysis_menu)
 
         help_menu = tk.Menu(menu, tearoff=False)
+        help_menu.add_command(label="사용 설명서", command=self._open_manual)
+        help_menu.add_separator()
         help_menu.add_command(
             label="단축키 안내",
             command=lambda: messagebox.showinfo(
@@ -119,6 +123,21 @@ class DarcyWeisbachApp(tk.Tk):
         )
         menu.add_cascade(label="도움말", menu=help_menu)
         self.configure(menu=menu)
+
+    def _open_manual(self) -> None:
+        bundle_dir = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
+        manual = bundle_dir / "MANUAL.md"
+        if not manual.exists():
+            messagebox.showerror(
+                "사용 설명서 오류",
+                "사용 설명서 파일을 찾을 수 없습니다.",
+                parent=self,
+            )
+            return
+        try:
+            webbrowser.open(manual.as_uri())
+        except OSError as exc:
+            messagebox.showerror("사용 설명서 오류", str(exc), parent=self)
 
     def _build_widgets(self) -> None:
         style = ttk.Style(self)
